@@ -27,6 +27,12 @@ dependencies {
     testImplementation 'io.qameta.allure:allure-selenide:2.12.1'
     implementation 'mysql:mysql-connector-java:8.0.28'
 }
+compileJava {
+    options.encoding = 'UTF-8'
+}
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
 
 test {
     useJUnitPlatform()
