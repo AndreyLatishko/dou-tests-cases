@@ -7,22 +7,16 @@ import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.webdriver;
+
 
 
 public class DouTestsCases extends BaseSelenideTest {
     private static final String URL = "https://dou.ua/";
-    private static WebDriver driver;
     @Test
     public  void openAllHref(){
         Selenide.open(URL);
@@ -76,7 +70,8 @@ public class DouTestsCases extends BaseSelenideTest {
     public void editUserName(){
         new Authorisation()
                 .correctAuthorisation(TestValues.getTestUserEmail(),TestValues.getTestUserPassword());
-        Selenide.sleep(3000);
+        Selenide.sleep(1000);
+        Selenide.clearBrowserLocalStorage();
         new MainPage().getUserProfileAvatar().shouldBe(Condition.visible).click();
         new UserPage().getEditProfile().click();
         new EditProfilePage().getUserDisplayName().clear();
@@ -89,10 +84,12 @@ public class DouTestsCases extends BaseSelenideTest {
         Selenide.open(URL);
         new MainPage().getCharacterJob().click();
         new JobPage().getTop50Company().click();
-        Selenide.sleep(5000);
-        $x("//*[text()='Січ 22']/..").scrollIntoView(false);
-       // new FiftyCompanyPage().getTestsPointOverlayScroll().scrollTo();
-       // Selenide.executeJavaScript("arguments[0].scrollIntoView(true);", new FiftyCompanyPage().getStartPointOverlayScroll().);
+        Selenide.clearBrowserLocalStorage();
+        new FiftyCompanyPage().getOverlayAndTable().shouldBe(Condition.visible);
+        Selenide.actions()
+                .dragAndDrop(new FiftyCompanyPage().getOverlayHandler(),new FiftyCompanyPage().getTestsPointOverlayScroll());
+        new FiftyCompanyPage().getOverlayHandler().scrollTo();
+        int i = 0;
         Assertions.assertEquals( new FiftyCompanyPage().getFirstCompany().getText(), "EPAM Ukraine");
     }
     @Test
