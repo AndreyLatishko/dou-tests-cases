@@ -5,11 +5,13 @@ import com.tests.base.BaseSelenideTest;
 import com.tests.helpers.Authorisation;
 import com.tests.helpers.TestValues;
 import com.tests.page.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Description;
+import org.junit.jupiter.api.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DouTestsCases extends BaseSelenideTest {
     private final MainPage mainPage = new MainPage();
     private final JobPage jobPage = new JobPage();
@@ -22,6 +24,7 @@ public class DouTestsCases extends BaseSelenideTest {
     private final EditProfilePage editProfilePage = new EditProfilePage();
 
     @Test
+    @Order(3)
     public void openAllHref() {
         mainPage.getCharacterJob().click();
         jobPage.searchListLinks();
@@ -39,6 +42,8 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
+    @Order(6)
+    @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
         authorisation.correctAuthorisation("qwasfase", TestValues.getTestUserPassword());
         loginPage.getMessageAboutError().isDisplayed();
@@ -49,6 +54,7 @@ public class DouTestsCases extends BaseSelenideTest {
      * check this test with ukrainian, english language
      */
     @Test
+    @Order(2)
     public void userFindEventTags() {
         mainPage.getCharacterCalendar().click();
         calendarPage.getOptionPlace().click();
@@ -74,6 +80,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
+    @Order(4)
     public void editUserName() {
         authorisation.correctAuthorisation(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
         Selenide.sleep(1000);
@@ -87,6 +94,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
+    @Order(5)
     public void findTheMostBiggestCompany() {
         mainPage.getCharacterJob().click();
         jobPage.getTop50Company().click();
@@ -100,6 +108,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
+    @Order(1)
     public void checkValueTechnicalStaffTop50Company() {
         mainPage.getCharacterJob().click();
         jobPage.getTop50Company().click();
