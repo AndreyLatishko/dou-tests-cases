@@ -29,10 +29,10 @@ public class DouTestsCases extends BaseSelenideTest {
         ArrayList<String> links = new ArrayList<>();
         refs.forEach(x -> links.add(x.getAttribute("href")));
 
-        for (String link : links) {
-            Selenide.open(link);
-            String currentUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
-            Assertions.assertEquals(currentUrl, link);
+        for (String actualLink : links) {
+            Selenide.open(actualLink);
+            String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+            Assertions.assertEquals(expectedUrl, actualLink);
         }
     }
 
@@ -61,10 +61,10 @@ public class DouTestsCases extends BaseSelenideTest {
                 Assertions.assertEquals(tag, "QA");
             }
         }
-        String place = eventPage.getEventPlace().getText();
-        Assertions.assertNotNull(place);
-        if (place.equals("Online") || place.equals("online")
-                || place.equals("Онлайн") || place.equals("онлайн")) {
+        String expectedPlace = eventPage.getEventPlace().getText();
+        Assertions.assertNotNull(expectedPlace);
+        if (expectedPlace.equals("Online") || expectedPlace.equals("online")
+                || expectedPlace.equals("Онлайн") || expectedPlace.equals("онлайн")) {
             Assertions.assertTrue(true);
         } else {
             Assertions.assertFalse(false);
@@ -103,16 +103,16 @@ public class DouTestsCases extends BaseSelenideTest {
         jobPage.getTop50Company().click();
 
         ElementsCollection refs = fiftyCompanyPage.getTechnicalStaffValue();
-        ArrayList<Integer> links = new ArrayList<>();
+        ArrayList<Integer> expectedLinks = new ArrayList<>();
         for (SelenideElement ref : refs) {
             //забрать со строки все значение, и вытащить только число
-            links.add(Integer.valueOf(ref.getText().replaceAll("\\D+", "")));
+            expectedLinks.add(Integer.valueOf(ref.getText().replaceAll("\\D+", "")));
         }
-        ArrayList<Integer> listsWeb = new ArrayList<>(links);
-        Collections.sort(links);
-        Assertions.assertEquals(listsWeb.size(), links.size());
-        for (int i = 0; i < links.size(); i++) {
-            Assertions.assertEquals(links.get(i), listsWeb.get(i));
+        ArrayList<Integer> actualLinks = new ArrayList<>(expectedLinks);
+        Collections.sort(expectedLinks);
+        Assertions.assertEquals(actualLinks.size(), expectedLinks.size());
+        for (int i = 0; i < expectedLinks.size(); i++) {
+            Assertions.assertEquals(expectedLinks.get(i), actualLinks.get(i));
         }
     }
 }
