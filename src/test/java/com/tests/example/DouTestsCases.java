@@ -7,16 +7,10 @@ import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 
-
-
-
 public class DouTestsCases extends BaseSelenideTest {
-    private static final String URL = "https://dou.ua/";
     private final MainPage mainPage = new MainPage();
     private final JobPage jobPage = new JobPage();
     private final LoginPage loginPage = new LoginPage();
@@ -26,14 +20,14 @@ public class DouTestsCases extends BaseSelenideTest {
     private final CalendarPage calendarPage = new CalendarPage();
     private final UserPage userPage = new UserPage();
     private final EditProfilePage editProfilePage = new EditProfilePage();
+
     @Test
-    public  void openAllHref(){
-        Selenide.open(URL);
+    public void openAllHref() {
         mainPage.getCharacterJob().click();
         jobPage.searchListLinks();
         ElementsCollection refs = jobPage.getElements();
         ArrayList<String> links = new ArrayList<>();
-        refs.forEach(x-> links.add(x.getAttribute("href")));
+        refs.forEach(x -> links.add(x.getAttribute("href")));
 
         for (String link : links) {
             Selenide.open(link);
@@ -41,18 +35,19 @@ public class DouTestsCases extends BaseSelenideTest {
             Assertions.assertEquals(currentUrl, link);
         }
     }
+
     @Test
-    public void incorrectAuthorisationUser(){
-        authorisation.correctAuthorisation("qwasfase",TestValues.getTestUserPassword());
+    public void incorrectAuthorisationUser() {
+        authorisation.correctAuthorisation("qwasfase", TestValues.getTestUserPassword());
         loginPage.getMessageAboutError().isDisplayed();
         loginPage.getCloseLoginPage().click();
     }
+
     /**
-     * check this test with ukrainian  language, example second event, it is work
+     * check this test with ukrainian, english language
      */
     @Test
-    public void userFindEventTags(){
-        Selenide.open(URL);
+    public void userFindEventTags() {
         mainPage.getCharacterCalendar().click();
         calendarPage.getOptionPlace().click();
         calendarPage.getOptionTopic().click();
@@ -60,7 +55,7 @@ public class DouTestsCases extends BaseSelenideTest {
 
         ElementsCollection refs = eventPage.getEventTopics();
         ArrayList<String> tags = new ArrayList<>();
-        refs.forEach(x-> tags.add(x.getAttribute("text")));
+        refs.forEach(x -> tags.add(x.getAttribute("text")));
         for (String tag : tags) {
             if (tag.equals("QA")) {
                 Assertions.assertEquals(tag, "QA");
@@ -69,15 +64,16 @@ public class DouTestsCases extends BaseSelenideTest {
         String place = eventPage.getEventPlace().getText();
         Assertions.assertNotNull(place);
         if (place.equals("Online") || place.equals("online")
-                || place.equals("Онлайн")|| place.equals("онлайн")) {
+                || place.equals("Онлайн") || place.equals("онлайн")) {
             Assertions.assertTrue(true);
         } else {
             Assertions.assertFalse(false);
         }
     }
+
     @Test
-    public void editUserName(){
-        authorisation.correctAuthorisation(TestValues.getTestUserEmail(),TestValues.getTestUserPassword());
+    public void editUserName() {
+        authorisation.correctAuthorisation(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
         mainPage.getUserProfileAvatar().shouldBe(Condition.visible).click();
@@ -87,22 +83,22 @@ public class DouTestsCases extends BaseSelenideTest {
         editProfilePage.getSaveButton().click();
         Assertions.assertEquals(userPage.getUserNameProfile().getText(), TestValues.getTestUserName());
     }
+
     @Test
-    public void findTheMostBiggestCompany(){
-        Selenide.open(URL);
+    public void findTheMostBiggestCompany() {
         mainPage.getCharacterJob().click();
         jobPage.getTop50Company().click();
         Selenide.clearBrowserLocalStorage();
         fiftyCompanyPage.getOverlayAndTable().shouldBe(Condition.visible);
         Selenide.actions()
-                .dragAndDrop(fiftyCompanyPage.getOverlayHandler(),fiftyCompanyPage.getTestsPointOverlayScroll());
+                .dragAndDrop(fiftyCompanyPage.getOverlayHandler(), fiftyCompanyPage.getTestsPointOverlayScroll());
         fiftyCompanyPage.getOverlayHandler().scrollTo();
         int i = 0;
-        Assertions.assertEquals( fiftyCompanyPage.getFirstCompany().getText(), "EPAM Ukraine");
+        Assertions.assertEquals(fiftyCompanyPage.getFirstCompany().getText(), "EPAM Ukraine");
     }
+
     @Test
-    public void checkValueTechnicalStaffTop50Company(){
-        Selenide.open(URL);
+    public void checkValueTechnicalStaffTop50Company() {
         mainPage.getCharacterJob().click();
         jobPage.getTop50Company().click();
 

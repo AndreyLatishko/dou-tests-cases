@@ -7,10 +7,8 @@ import com.tests.page.LoginPage;
 import com.tests.page.MainPage;
 
 public class Authorisation extends BaseSelenideTest {
-    private static final String URL = "https://dou.ua/";
 
     public void correctAuthorisation(String email, String password){
-        Selenide.open(URL);
         new MainPage().getLoginButton().click();
         new EnterPage().getEnterForEmail().click();
         new LoginPage().getUserTextBoxEmail()
