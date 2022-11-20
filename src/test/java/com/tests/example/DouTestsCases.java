@@ -32,6 +32,8 @@ public class DouTestsCases extends BaseSelenideTest {
         for (String actualLink : links) {
             Selenide.open(actualLink);
             String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+            Assertions.assertNotNull(expectedUrl);
+            //почему некоторые пишут var вместо того чтобы напрямую указывать тип переменной?
             Assertions.assertEquals(expectedUrl, actualLink);
         }
     }
