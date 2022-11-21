@@ -10,7 +10,7 @@ public class CalendarPage extends BaseSelenideTest {
         return $x("//select[@name='city']//option//following::option[1]");
     }
     public SelenideElement getOptionTopic() {
-        return $x("//select[@name='tag']//option//following::option[24]");
+        return $x("//select[@name='tag']//option[text()='QA']");
     }
 
     public SelenideElement getFirstEvent() {

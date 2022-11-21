@@ -1,15 +1,20 @@
 package com.tests.example;
 
 import com.codeborne.selenide.*;
+import com.codeborne.selenide.impl.JavaScript;
 import com.tests.base.BaseSelenideTest;
 import com.tests.helpers.Authorisation;
 import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import io.qameta.allure.Description;
+import net.jodah.failsafe.internal.util.Assert;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static com.codeborne.selenide.Selenide.$;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DouTestsCases extends BaseSelenideTest {
@@ -42,7 +47,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(6)
+    @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
         authorisation.correctAuthorisation("qwasfase", TestValues.getTestUserPassword());
@@ -80,7 +85,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     public void editUserName() {
         authorisation.correctAuthorisation(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
         Selenide.sleep(1000);
@@ -100,15 +105,15 @@ public class DouTestsCases extends BaseSelenideTest {
         jobPage.getTop50Company().click();
         Selenide.clearBrowserLocalStorage();
         fiftyCompanyPage.getOverlayAndTable().shouldBe(Condition.visible);
-        Selenide.actions()
-                .dragAndDrop(fiftyCompanyPage.getOverlayHandler(), fiftyCompanyPage.getTestsPointOverlayScroll());
-        fiftyCompanyPage.getOverlayHandler().scrollTo();
-        int i = 0;
+        Selenide.executeJavaScript(
+                "document.querySelector" +
+                        "(\"#period-slider > g >g.handler\").style.transform = 'translate(1229px,0)';"
+        );
         Assertions.assertEquals(fiftyCompanyPage.getFirstCompany().getText(), "EPAM Ukraine");
     }
 
     @Test
-    @Order(1)
+    @Order(4)
     public void checkValueTechnicalStaffTop50Company() {
         mainPage.getCharacterJob().click();
         jobPage.getTop50Company().click();
@@ -126,4 +131,5 @@ public class DouTestsCases extends BaseSelenideTest {
             Assertions.assertEquals(expectedLinks.get(i), actualLinks.get(i));
         }
     }
+
 }

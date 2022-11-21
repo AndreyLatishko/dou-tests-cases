@@ -7,11 +7,6 @@ import com.tests.base.BaseSelenideTest;
 import static com.codeborne.selenide.Selenide.*;
 
 public class FiftyCompanyPage extends BaseSelenideTest {
-
-    public SelenideElement getTestsPointOverlayScroll(){
-      //  return  $x("//*[text()='Січ 22']/..");
-        return  $x("//*[text()='Січень 2022']/ancestor::*[1]");
-    }
     public ElementsCollection getTechnicalStaffValue(){
         return $$x("//tr[contains(@class,'tr')]//td[@class='col-3']//span[@class='staffTech-value']");
     }
@@ -24,10 +19,4 @@ public class FiftyCompanyPage extends BaseSelenideTest {
         return $x("//div[@id='chart-top50-table']");
     }
 
-    public SelenideElement getOverlay() {
-        return $x("//div[@id='slider-wrapper']");
-    }
-    public SelenideElement getOverlayHandler(){
-        return $x("//*[@class='handler']");
-    }
 }
