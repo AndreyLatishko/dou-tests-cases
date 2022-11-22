@@ -12,9 +12,9 @@ public class JobPage {
         return $$x("//li[@class='l-vacancy']//div[@class='title']//a[@class='vt']");
     }
 
-    public void searchListLinks() {
-        $x("//option[@value='QA']").click();
-        $x("//input[@class='job']").setValue("junior").pressEnter();
+    public void searchListLinks(String specialization, String jobPosition) {
+        $x(String.format("//option[@value='%s']",specialization)).click();
+        $x("//input[@class='job']").setValue(jobPosition).pressEnter();
     }
 
     public SelenideElement getTop50Company() {

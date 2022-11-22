@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class MainPage {
 
     public SelenideElement getCharacterJob() {
-        return $x("//a[@href='https://jobs.dou.ua/']");
+        return $x("//a[text()='Робота']");
     }
 
     public SelenideElement getCharacterCalendar() {

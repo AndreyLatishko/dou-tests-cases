@@ -27,7 +27,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(3)
     public void openAllHref() {
         mainPage.getCharacterJob().click();
-        jobPage.searchListLinks();
+        jobPage.searchListLinks(TestValues.getTestUserSpecialization(),TestValues.getTestUserJobPosition());
         ElementsCollection refs = jobPage.getElements();
         ArrayList<String> links = new ArrayList<>();
         refs.forEach(x -> links.add(x.getAttribute("href")));
@@ -58,15 +58,15 @@ public class DouTestsCases extends BaseSelenideTest {
     public void userFindEventTags() {
         mainPage.getCharacterCalendar().click();
         calendarPage.getOptionPlace().click();
-        calendarPage.getOptionTopic().click();
+        calendarPage.getOptionTopic(TestValues.getTestUserCalendarTopic()).click();
         calendarPage.getFirstEvent().click();
 
         ElementsCollection refs = eventPage.getEventTopics();
         ArrayList<String> tags = new ArrayList<>();
         refs.forEach(x -> tags.add(x.getAttribute("text")));
         for (String tag : tags) {
-            if (tag.equals("QA")) {
-                Assertions.assertEquals(tag, "QA");
+            if (tag.equals(TestValues.getTestUserSpecialization())) {
+                Assertions.assertEquals(tag, TestValues.getTestUserSpecialization());
             }
         }
         String expectedPlace = eventPage.getEventPlace().getText();
@@ -116,7 +116,6 @@ public class DouTestsCases extends BaseSelenideTest {
         ElementsCollection refs = fiftyCompanyPage.getTechnicalStaffValue();
         ArrayList<Integer> expectedLinks = new ArrayList<>();
         for (SelenideElement ref : refs) {
-            //забрать со строки все значение, и вытащить только число
             expectedLinks.add(Integer.valueOf(ref.getText().replaceAll("\\D+", "")));
         }
         ArrayList<Integer> actualLinks = new ArrayList<>(expectedLinks);
@@ -125,6 +124,7 @@ public class DouTestsCases extends BaseSelenideTest {
         for (int i = 0; i < expectedLinks.size(); i++) {
             Assertions.assertEquals(expectedLinks.get(i), actualLinks.get(i));
         }
+        int i = 0;
     }
 
 }

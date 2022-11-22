@@ -9,8 +9,8 @@ public class CalendarPage {
         return $x("//select[@name='city']//option//following::option[1]");
     }
 
-    public SelenideElement getOptionTopic() {
-        return $x("//select[@name='tag']//option[text()='QA']");
+    public SelenideElement getOptionTopic(String topic) {
+        return $x(String.format("//select[@name='tag']//option[text()='%s']", topic));
     }
 
     public SelenideElement getFirstEvent() {
