@@ -10,12 +10,15 @@ public class MainPage {
     public SelenideElement getCharacterJob() {
         return $x("//a[@href='https://jobs.dou.ua/']");
     }
+
     public SelenideElement getCharacterCalendar() {
         return $x("//li[@class='m-last']//a");
     }
+
     public SelenideElement getLoginButton() {
         return $x("//a[@id='login-link']");
     }
+
     public SelenideElement getUserProfileAvatar() {
         return $("a.min-profile");
     }

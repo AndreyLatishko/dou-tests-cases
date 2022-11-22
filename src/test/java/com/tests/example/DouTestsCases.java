@@ -1,20 +1,15 @@
 package com.tests.example;
 
 import com.codeborne.selenide.*;
-import com.codeborne.selenide.impl.JavaScript;
 import com.tests.base.BaseSelenideTest;
 import com.tests.helpers.Authorisation;
 import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import io.qameta.allure.Description;
-import net.jodah.failsafe.internal.util.Assert;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.JavascriptExecutor;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.codeborne.selenide.Selenide.$;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DouTestsCases extends BaseSelenideTest {

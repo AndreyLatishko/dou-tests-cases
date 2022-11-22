@@ -2,16 +2,16 @@ package com.tests.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.tests.base.BaseSelenideTest;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
 
-public class FiftyCompanyPage extends BaseSelenideTest {
-    public ElementsCollection getTechnicalStaffValue(){
+public class FiftyCompanyPage {
+    public ElementsCollection getTechnicalStaffValue() {
         return $$x("//tr[contains(@class,'tr')]//td[@class='col-3']//span[@class='staffTech-value']");
     }
 
-    public SelenideElement getFirstCompany(){
+    public SelenideElement getFirstCompany() {
         return $x("//div[@class='dou-chart']//tr[@class='tr-1']//td[@class='col-1']//div[@class='company-name-block']//a");
     }
 
