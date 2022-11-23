@@ -22,6 +22,7 @@ public class DouTestsCases extends BaseSelenideTest {
     private final CalendarPage calendarPage = new CalendarPage();
     private final UserPage userPage = new UserPage();
     private final EditProfilePage editProfilePage = new EditProfilePage();
+    private final CompanyPage companyPage = new CompanyPage();
 
     @Test
     @Order(3)
@@ -45,7 +46,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        authorisation.correctAuthorisation("qwasfase", TestValues.getTestUserPassword());
+        authorisation.authorisationEmail("qwasfase", TestValues.getTestUserPassword());
         loginPage.getMessageAboutError().isDisplayed();
         loginPage.getCloseLoginPage().click();
     }
@@ -82,7 +83,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        authorisation.correctAuthorisation(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
+        authorisation.authorisationEmail(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
         mainPage.getUserProfileAvatar().shouldBe(Condition.visible).click();
@@ -124,6 +125,15 @@ public class DouTestsCases extends BaseSelenideTest {
         for (int i = 0; i < expectedLinks.size(); i++) {
             Assertions.assertEquals(expectedLinks.get(i), actualLinks.get(i));
         }
+        int i = 0;
+    }
+
+    @Test
+    @Order(7)
+    public void evaluationProvideCompany(){
+        mainPage.getCharacterJob().click();
+        jobPage.getVacancyCompany(TestValues.getTestCompanyName()).click();
+        var value = companyPage.getEvaluationCompany().text().replaceAll("\\D+", "");
         int i = 0;
     }
 

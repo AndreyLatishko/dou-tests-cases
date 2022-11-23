@@ -9,7 +9,7 @@ public class Authorisation {
     private final EnterPage enterPage = new EnterPage();
     private final LoginPage loginPage = new LoginPage();
 
-    public void correctAuthorisation(String email, String password) {
+    public void authorisationEmail(String email, String password) {
         mainPage.getLoginButton().click();
         enterPage.getEnterForEmail().click();
         loginPage.getUserTextBoxEmail()

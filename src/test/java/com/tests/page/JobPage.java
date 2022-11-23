@@ -20,4 +20,7 @@ public class JobPage {
     public SelenideElement getTop50Company() {
         return $x("//li[@class='top']//a");
     }
+    public SelenideElement getVacancyCompany(String nameCompany) {
+        return $x(String.format("//*[@alt='%s']",nameCompany));
+    }
 }
