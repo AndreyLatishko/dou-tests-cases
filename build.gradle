@@ -25,6 +25,7 @@ dependencies {
     testImplementation 'io.qameta.allure:allure-rest-assured:2.12.1'
     testImplementation 'io.qameta.allure:allure-java-commons:2.12.1'
     testImplementation 'io.qameta.allure:allure-selenide:2.12.1'
+    testImplementation 'io.rest-assured:rest-assured:4.5.1'
     implementation 'mysql:mysql-connector-java:8.0.28'
 }
 compileJava {
