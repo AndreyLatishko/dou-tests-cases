@@ -2,6 +2,7 @@ package com.tests.example;
 
 import com.tests.api.Register;
 import com.tests.api.SuccessRegister;
+import com.tests.api.UnSuccessRegister;
 import com.tests.api.UserData;
 import com.tests.helpers.ApiSpecifications;
 import org.junit.jupiter.api.Assertions;
@@ -52,5 +53,19 @@ public class ReqresTest {
 
         Assertions.assertEquals(id, successRegister.getId());
         Assertions.assertEquals(token, successRegister.getToken());
+    }
+
+    @Test
+    public void unSuccessRegisterTest(){
+        ApiSpecifications.installSpecification
+                (ApiSpecifications.requestSpecification(URL),ApiSpecifications.responseSpecification400());
+        Register user = new Register("sydney@fife","");
+        UnSuccessRegister unSuccessRegister = given()
+                .body(user)
+                .when()
+                .post("api/register")
+                .then().log().all()
+                .extract().as(UnSuccessRegister.class);
+        Assertions.assertEquals("Missing password", unSuccessRegister.getError());
     }
 }
