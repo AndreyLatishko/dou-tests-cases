@@ -15,15 +15,9 @@ public class ApiSpecifications {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecification200(){
+    public static ResponseSpecification responseSpecification(int status){
         return  new ResponseSpecBuilder()
-                .expectStatusCode(200)
-                .build();
-    }
-
-    public static ResponseSpecification responseSpecification400(){
-        return  new ResponseSpecBuilder()
-                .expectStatusCode(400)
+                .expectStatusCode(Integer.parseInt(String.format("%s",status)))
                 .build();
     }
 
