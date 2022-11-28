@@ -75,4 +75,11 @@ public class ReqresTest {
                 (ApiSpecifications.requestSpecification(URL),ApiSpecifications.responseSpecification(204));
         given().when().delete("api/users/2").then().log().all();
     }
+
+    @Test
+    public void singleUserNotFoundTest(){
+        ApiSpecifications.installSpecification
+                (ApiSpecifications.requestSpecification(URL),ApiSpecifications.responseSpecification(404));
+        given().when().get("api/users/23").then().log().all();
+    }
 }
