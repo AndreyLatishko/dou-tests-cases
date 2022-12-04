@@ -11,10 +11,10 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.tests.helpers.TestValues.*;
 import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DouTestsCases extends BaseSelenideTest {
@@ -33,7 +33,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(3)
     public void openAllHref() {
         mainPage.getCharacterJob().click();
-        jobPage.searchListLinks(TestValues.getTestUserSpecialization(),TestValues.getTestUserJobPosition());
+        jobPage.searchListLinks(getTestUserSpecialization(),getTestUserJobPosition());
         ElementsCollection refs = jobPage.getElements();
         ArrayList<String> links = new ArrayList<>();
         refs.forEach(x -> links.add(x.getAttribute("href")));
@@ -42,7 +42,6 @@ public class DouTestsCases extends BaseSelenideTest {
             Selenide.open(actualLink);
             String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
             assertNotNull(expectedUrl);
-            //почему некоторые пишут var вместо того чтобы напрямую указывать тип переменной?
             assertEquals(expectedUrl, actualLink);
         }
     }
@@ -51,7 +50,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        authorisation.authorisationEmail("qwasfase", TestValues.getTestUserPassword());
+        authorisation.authorisationEmail("qwasfase", getTestUserPassword());
         loginPage.getMessageAboutError().isDisplayed();
         loginPage.getCloseLoginPage().click();
     }
@@ -64,15 +63,15 @@ public class DouTestsCases extends BaseSelenideTest {
     public void userFindEventTags() {
         mainPage.getCharacterCalendar().click();
         calendarPage.getOptionPlace().click();
-        calendarPage.getOptionTopic(TestValues.getTestUserCalendarTopic()).click();
+        calendarPage.getOptionTopic(getTestUserCalendarTopic()).click();
         calendarPage.getFirstEvent().click();
 
         ElementsCollection refs = eventPage.getEventTopics();
         ArrayList<String> tags = new ArrayList<>();
         refs.forEach(x -> tags.add(x.getAttribute("text")));
         for (String tag : tags) {
-            if (tag.equals(TestValues.getTestUserSpecialization())) {
-                assertEquals(tag, TestValues.getTestUserSpecialization());
+            if (tag.equals(getTestUserSpecialization())) {
+                assertEquals(tag, getTestUserSpecialization());
             }
         }
         String expectedPlace = eventPage.getEventPlace().getText();
@@ -88,15 +87,15 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        authorisation.authorisationEmail(TestValues.getTestUserEmail(), TestValues.getTestUserPassword());
+        authorisation.authorisationEmail(getTestUserEmail(),getTestUserPassword());
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
         mainPage.getUserProfileAvatar().shouldBe(Condition.visible).click();
         userPage.getEditProfile().click();
         editProfilePage.getUserDisplayName().clear();
-        editProfilePage.getUserDisplayName().setValue(TestValues.getTestUserName());
+        editProfilePage.getUserDisplayName().setValue(getTestUserName());
         editProfilePage.getSaveButton().click();
-        assertEquals(userPage.getUserNameProfile().getText(), TestValues.getTestUserName());
+        assertEquals(userPage.getUserNameProfile().getText(), getTestUserName());
     }
 
     @Test
@@ -137,7 +136,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(7)
     public void evaluationProvideCompany(){
         mainPage.getCharacterJob().click();
-        jobPage.getVacancyCompany(TestValues.getTestCompanyName()).click();
+        jobPage.getVacancyCompany(getTestCompanyName()).click();
         int value = parseInt((companyPage.getEvaluationCompany().text().replaceAll("\\D+", "")))/1000;
         assertNotNull(value);
         assertTrue(value < 100 && value > 0);
