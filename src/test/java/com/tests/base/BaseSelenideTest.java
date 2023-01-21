@@ -7,15 +7,16 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import static com.tests.base.WebDriverFactory.*;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class BaseSelenideTest {
     private static final String URL = "https://dou.ua/";
     @BeforeEach
     public void setUp(){
-        WebDriverManager.chromedriver().setup();
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 40;
+        setUP("chrome");
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         Selenide.open(URL);
     }

@@ -7,6 +7,7 @@ public class TestValues {
     private static final String TEST_USER_SPECIALIZATION = "QA";
     private static final String TEST_USER_JOBPOSIITION = "junior";
     private static final String TEST_USER_CALENDARTOPIC = "QA";
+    private static final String TEST_USER_COMPANY_TITLE = "Parimatch Tech";
 
     public static String getTestUserCalendarTopic() {return TEST_USER_CALENDARTOPIC;}
 
@@ -23,4 +24,8 @@ public class TestValues {
     public static String getTestUserSpecialization() {return TEST_USER_SPECIALIZATION;}
 
     public static String getTestUserJobPosition() {return TEST_USER_JOBPOSIITION;}
+
+    public static String getTestUserCompanyTitle() {
+        return TEST_USER_COMPANY_TITLE;
+    }
 }
