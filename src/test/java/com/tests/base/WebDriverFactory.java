@@ -6,7 +6,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class WebDriverFactory {
-    public static WebDriverManager setUP(String name) {
+    public static WebDriverManager setBrowser(String name) {
         switch (name) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
