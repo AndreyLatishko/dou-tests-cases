@@ -7,6 +7,8 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class MainPage {
 
+    // todo consistent selectors in each Page object
+
     public SelenideElement getCharacterJob() {
         return $x("//a[text()='Робота']");
     }

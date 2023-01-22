@@ -2,7 +2,7 @@ package com.tests.example;
 
 import com.codeborne.selenide.*;
 import com.tests.base.BaseSelenideTest;
-import com.tests.helpers.Authorisation;
+import com.tests.page.LoginFlow;
 import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import io.qameta.allure.Description;
@@ -21,7 +21,7 @@ public class DouTestsCases extends BaseSelenideTest {
     private final MainPage mainPage = new MainPage();
     private final JobPage jobPage = new JobPage();
     private final LoginPage loginPage = new LoginPage();
-    private final Authorisation authorisation = new Authorisation();
+    private final LoginFlow loginFlow = new LoginFlow();
     private final FiftyCompanyPage fiftyCompanyPage = new FiftyCompanyPage();
     private final EventPage eventPage = new EventPage();
     private final CalendarPage calendarPage = new CalendarPage();
@@ -50,7 +50,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        authorisation.authorisationEmail("qwasfase", getTestUserPassword());
+        loginFlow.authorizationEmail("qwasfase", getTestUserPassword());
         loginPage.getMessageAboutError().isDisplayed();
         loginPage.getCloseLoginPage().click();
     }
@@ -61,16 +61,21 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(2)
     public void userFindEventTags() {
+        // todo mainPage.openCalendarTab();
         mainPage.getCharacterCalendar().click();
+
+        // todo calendarPage.selectTopic(TestValues.TEST_USER_CALENDARTOPIC);
         calendarPage.getOptionPlace().click();
         calendarPage.getOptionTopic(getTestUserCalendarTopic()).click();
+
+        // todo calendarPage.openFirstEvent()
         calendarPage.getFirstEvent().click();
 
         ElementsCollection refs = eventPage.getEventTopics();
         ArrayList<String> tags = new ArrayList<>();
         refs.forEach(x -> tags.add(x.getAttribute("text")));
         for (String tag : tags) {
-            if (tag.equals(getTestUserSpecialization())) {
+            if (tag.equals(getTestUserSpecialization())) { // todo will never fail
                 assertEquals(tag, getTestUserSpecialization());
             }
         }
@@ -87,7 +92,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        authorisation.authorisationEmail(getTestUserEmail(),getTestUserPassword());
+        loginFlow.authorizationEmail(getTestUserEmail(),getTestUserPassword());
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
         mainPage.getUserProfileAvatar().shouldBe(Condition.visible).click();
@@ -141,5 +146,4 @@ public class DouTestsCases extends BaseSelenideTest {
         assertNotNull(value);
         assertTrue(value < 100 && value > 0);
     }
-
 }

@@ -1,9 +1,11 @@
 package com.tests.helpers;
 
-public class TestValues {
+public class TestValues { // TODO just use public constants
     private static final String TEST_USER_EMAIL = "asdasfasfas@gmail.com";
     private static final String TEST_USER_PASSWORD = "asfasf";
     private static final String TEST_USER_NAME = "Андрій Латишко";
+
+    // todo user prefix
     private static final String TEST_USER_SPECIALIZATION = "QA";
     private static final String TEST_USER_JOBPOSIITION = "junior";
     private static final String TEST_USER_CALENDARTOPIC = "QA";
