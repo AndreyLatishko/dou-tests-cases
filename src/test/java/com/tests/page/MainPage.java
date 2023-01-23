@@ -1,6 +1,6 @@
 package com.tests.page;
 
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.Condition;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
@@ -9,20 +9,20 @@ public class MainPage {
 
     // todo consistent selectors in each Page object
 
-    public SelenideElement getCharacterJob() {
-        return $x("//a[text()='Робота']");
+    public void openJobTab() {
+         $x("//a[text()='Робота']").click();
     }
 
-    public SelenideElement getCharacterCalendar() {
-        return $x("//li[@class='m-last']//a");
+    public  void openCalendarTab() {
+        $x("//a[text()='Календар']").click();
     }
 
-    public SelenideElement getLoginButton() {
-        return $x("//a[@id='login-link']");
+    public void loginButton() {
+        $x("//a[@id='login-link']").click();
     }
 
-    public SelenideElement getUserProfileAvatar() {
-        return $("a.min-profile");
+    public void userProfile() {
+        $("a.min-profile").shouldBe(Condition.visible).click();
     }
 
 }

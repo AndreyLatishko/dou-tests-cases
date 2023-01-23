@@ -11,7 +11,6 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.tests.helpers.TestValues.*;
 import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DouTestsCases extends BaseSelenideTest {
     private final MainPage mainPage = new MainPage();
     private final JobPage jobPage = new JobPage();
-    private final LoginPage loginPage = new LoginPage();
+    private final LoginBorder loginBorder = new LoginBorder();
     private final LoginFlow loginFlow = new LoginFlow();
     private final FiftyCompanyPage fiftyCompanyPage = new FiftyCompanyPage();
     private final EventPage eventPage = new EventPage();
@@ -32,7 +31,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(3)
     public void openAllHref() {
-        mainPage.getCharacterJob().click();
+        mainPage.openJobTab();
         jobPage.searchListLinks(getTestUserSpecialization(),getTestUserJobPosition());
         ElementsCollection refs = jobPage.getElements();
         ArrayList<String> links = new ArrayList<>();
@@ -50,9 +49,9 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        loginFlow.authorizationEmail("qwasfase", getTestUserPassword());
-        loginPage.getMessageAboutError().isDisplayed();
-        loginPage.getCloseLoginPage().click();
+        loginFlow.authorizationEmail("wrong@gmail.com", TestValues.TEST_USER_PASSWORD);
+        loginBorder.alertForError();
+        loginBorder.closeLoginBorder();
     }
 
     /**
@@ -61,15 +60,10 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(2)
     public void userFindEventTags() {
-        // todo mainPage.openCalendarTab();
-        mainPage.getCharacterCalendar().click();
-
-        // todo calendarPage.selectTopic(TestValues.TEST_USER_CALENDARTOPIC);
-        calendarPage.getOptionPlace().click();
-        calendarPage.getOptionTopic(getTestUserCalendarTopic()).click();
-
-        // todo calendarPage.openFirstEvent()
-        calendarPage.getFirstEvent().click();
+        mainPage.openCalendarTab();
+        calendarPage.selectPlace(TestValues.CALENDAR_PLACE);
+        calendarPage.selectTopic(TestValues.CALENDAR_TOPIC);
+        calendarPage.openFirstEvent();
 
         ElementsCollection refs = eventPage.getEventTopics();
         ArrayList<String> tags = new ArrayList<>();
@@ -95,7 +89,7 @@ public class DouTestsCases extends BaseSelenideTest {
         loginFlow.authorizationEmail(getTestUserEmail(),getTestUserPassword());
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
-        mainPage.getUserProfileAvatar().shouldBe(Condition.visible).click();
+        mainPage.userProfile();
         userPage.getEditProfile().click();
         editProfilePage.getUserDisplayName().clear();
         editProfilePage.getUserDisplayName().setValue(getTestUserName());
@@ -106,7 +100,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(5)
     public void findTheMostBiggestCompany() {
-        mainPage.getCharacterJob().click();
+        mainPage.openJobTab();
         jobPage.getTop50Company().click();
         Selenide.clearBrowserLocalStorage();
         fiftyCompanyPage.getOverlayAndTable().shouldBe(Condition.visible);
@@ -120,7 +114,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(4)
     public void checkValueTechnicalStaffTop50Company() {
-        mainPage.getCharacterJob().click();
+        mainPage.openJobTab();
         jobPage.getTop50Company().click();
 
         ElementsCollection refs = fiftyCompanyPage.getTechnicalStaffValue();
@@ -140,7 +134,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(7)
     public void evaluationProvideCompany(){
-        mainPage.getCharacterJob().click();
+        mainPage.openJobTab();
         jobPage.getVacancyCompany(TestValues.getTestUserCompanyTitle()).click();
         int value = parseInt((companyPage.getEvaluationCompany().text().replaceAll("\\D+", "")))/1000;
         assertNotNull(value);
