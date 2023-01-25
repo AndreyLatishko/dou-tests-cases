@@ -1,15 +1,14 @@
 package com.tests.page;
 
-import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$x;
 
 public class UserPage {
-    public SelenideElement getEditProfile() {
-        return $x("//div[@class='wrap edit-content-link']//a[text()='Редагувати профіль']");
+    public void openEditProfile() {
+        $x("//div[@class='wrap edit-content-link']//a[text()='Редагувати профіль']").click();
     }
 
-    public SelenideElement getUserNameProfile() {
-        return $x("//div[@class='head']//h1");
+    public String checkUserName() {
+        return $x("//div[@class='head']//h1").text();
     }
 }

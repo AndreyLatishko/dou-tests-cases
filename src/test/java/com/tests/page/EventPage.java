@@ -1,17 +1,17 @@
 package com.tests.page;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class EventPage {
-    public SelenideElement getEventPlace() {
-        return $x("//div[@class='dd']//following::div[3]");
+    public String getEventPlace() {
+        ////div[text()='Місце']
+        return $x("//div[@class='dd']//following::div[3]").getText();
     }
 
-    public ElementsCollection getEventTopics() {
+    public ElementsCollection listTopicsInEvent() {
         return $$x("//div[@class='b-post-tags']//a");
     }
 }

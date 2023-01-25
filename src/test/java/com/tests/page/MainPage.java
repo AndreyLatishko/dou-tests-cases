@@ -7,13 +7,12 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class MainPage {
 
-    // todo consistent selectors in each Page object
 
     public void openJobTab() {
-         $x("//a[text()='Робота']").click();
+        $x("//a[text()='Робота']").click();
     }
 
-    public  void openCalendarTab() {
+    public void openCalendarTab() {
         $x("//a[text()='Календар']").click();
     }
 
@@ -21,7 +20,7 @@ public class MainPage {
         $x("//a[@id='login-link']").click();
     }
 
-    public void userProfile() {
+    public void openUserProfile() {
         $("a.min-profile").shouldBe(Condition.visible).click();
     }
 

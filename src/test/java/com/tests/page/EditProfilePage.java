@@ -1,15 +1,15 @@
 package com.tests.page;
 
-import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$x;
 
 public class EditProfilePage {
-    public SelenideElement getUserDisplayName() {
-        return $x("//input[@name='display_name']");
+    public void writeNewNameUser(String name) {
+        $x("//input[@name='display_name']").clear();
+        $x("//input[@name='display_name']").setValue(name);
     }
 
-    public SelenideElement getSaveButton() {
-        return $x("//button[@id='btnSubmit']");
+    public void getSaveButton() {
+        $x("//button[@id='btnSubmit']").click();
     }
 }

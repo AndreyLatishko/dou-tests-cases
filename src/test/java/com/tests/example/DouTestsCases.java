@@ -32,11 +32,13 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(3)
     public void openAllHref() {
         mainPage.openJobTab();
-        jobPage.searchListLinks(getTestUserSpecialization(),getTestUserJobPosition());
-        ElementsCollection refs = jobPage.getElements();
+        jobPage.searchListLinks(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
+        //вытащили все доступные вакансии по предыдущим условиям
+        ElementsCollection refs = jobPage.getAllVacancies();
         ArrayList<String> links = new ArrayList<>();
+        // из предыдущего списка вытащили информацию которая содержит ссылку на вакансию
         refs.forEach(x -> links.add(x.getAttribute("href")));
-
+        //сравниваем список линков из arraylist и те ссылки которые мы открываем через цикл
         for (String actualLink : links) {
             Selenide.open(actualLink);
             String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
@@ -65,15 +67,15 @@ public class DouTestsCases extends BaseSelenideTest {
         calendarPage.selectTopic(TestValues.CALENDAR_TOPIC);
         calendarPage.openFirstEvent();
 
-        ElementsCollection refs = eventPage.getEventTopics();
+        ElementsCollection refs = eventPage.listTopicsInEvent();
         ArrayList<String> tags = new ArrayList<>();
         refs.forEach(x -> tags.add(x.getAttribute("text")));
         for (String tag : tags) {
-            if (tag.equals(getTestUserSpecialization())) { // todo will never fail
-                assertEquals(tag, getTestUserSpecialization());
+            if (tag.equals(TestValues.SPECIALIZATION)) { // todo will never fail
+                assertEquals(tag, TestValues.SPECIALIZATION);
             }
         }
-        String expectedPlace = eventPage.getEventPlace().getText();
+        String expectedPlace = eventPage.getEventPlace();
         assertNotNull(expectedPlace);
         if (expectedPlace.equals("Online") || expectedPlace.equals("online")
                 || expectedPlace.equals("Онлайн") || expectedPlace.equals("онлайн")) {
@@ -86,36 +88,35 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        loginFlow.authorizationEmail(getTestUserEmail(),getTestUserPassword());
+        loginFlow.authorizationEmail(TestValues.TEST_USER_EMAIL,TestValues.TEST_USER_PASSWORD);
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
-        mainPage.userProfile();
-        userPage.getEditProfile().click();
-        editProfilePage.getUserDisplayName().clear();
-        editProfilePage.getUserDisplayName().setValue(getTestUserName());
-        editProfilePage.getSaveButton().click();
-        assertEquals(userPage.getUserNameProfile().getText(), getTestUserName());
+        mainPage.openUserProfile();
+        userPage.openEditProfile();
+        editProfilePage.writeNewNameUser(TestValues.TEST_USER_NAME);
+        editProfilePage.getSaveButton();
+        assertEquals(userPage.checkUserName(), TestValues.TEST_USER_NAME);
     }
 
     @Test
     @Order(5)
     public void findTheMostBiggestCompany() {
         mainPage.openJobTab();
-        jobPage.getTop50Company().click();
+        jobPage.openTop50CompanyTab();
         Selenide.clearBrowserLocalStorage();
-        fiftyCompanyPage.getOverlayAndTable().shouldBe(Condition.visible);
+        fiftyCompanyPage.getOverlayAndTable();
         Selenide.executeJavaScript(
                 "document.querySelector" +
                         "(\"#period-slider > g >g.handler\").style.transform = 'translate(1229px,0)';"
         );
-        assertEquals(fiftyCompanyPage.getFirstCompany().getText(), "EPAM Ukraine");
+        assertEquals(fiftyCompanyPage.getFirstCompany(), "EPAM Ukraine");
     }
 
     @Test
     @Order(4)
     public void checkValueTechnicalStaffTop50Company() {
         mainPage.openJobTab();
-        jobPage.getTop50Company().click();
+        jobPage.openTop50CompanyTab();
 
         ElementsCollection refs = fiftyCompanyPage.getTechnicalStaffValue();
         ArrayList<Integer> expectedLinks = new ArrayList<>();
@@ -135,8 +136,9 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(7)
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
-        jobPage.getVacancyCompany(TestValues.getTestUserCompanyTitle()).click();
-        int value = parseInt((companyPage.getEvaluationCompany().text().replaceAll("\\D+", "")))/1000;
+        jobPage.selectCompany(TestValues.COMPANY_TITLE);
+        // TODO: 24.01.2023 problem with this integer value
+        int value = parseInt((companyPage.getScoreCompany().text().replaceAll("\\D+", "")))/1000;
         assertNotNull(value);
         assertTrue(value < 100 && value > 0);
     }
