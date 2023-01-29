@@ -2,14 +2,17 @@ package com.tests.example;
 
 import com.codeborne.selenide.*;
 import com.tests.base.BaseSelenideTest;
+import com.tests.helpers.PropertiesReader;
 import com.tests.page.LoginFlow;
 import com.tests.helpers.TestValues;
 import com.tests.page.*;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 
 import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +30,16 @@ public class DouTestsCases extends BaseSelenideTest {
     private final UserPage userPage = new UserPage();
     private final EditProfilePage editProfilePage = new EditProfilePage();
     private final CompanyPage companyPage = new CompanyPage();
+    private final Properties properties;
+
+    {
+        try {
+            properties = new PropertiesReader().readProperties();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Test
     @Order(3)
@@ -51,7 +64,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        loginFlow.authorizationEmail("wrong@gmail.com", TestValues.TEST_USER_PASSWORD);
+        loginFlow.authorizationEmail("wrong@gmail.com", properties.getProperty("user.password"));
         loginBorder.alertForError();
         loginBorder.closeLoginBorder();
     }
@@ -68,18 +81,23 @@ public class DouTestsCases extends BaseSelenideTest {
         calendarPage.openFirstEvent();
 
         ElementsCollection refs = eventPage.listTopicsInEvent();
+        //достали список тем с ивента
         ArrayList<String> tags = new ArrayList<>();
+        // создали пустой список
         refs.forEach(x -> tags.add(x.getAttribute("text")));
+        // прошлись по всем темам и  сохранили в пустой список
         for (String tag : tags) {
-            if (tag.equals(TestValues.SPECIALIZATION)) { // todo will never fail
+            if (tag.contains(TestValues.SPECIALIZATION)) { //если тег содержит тестовое значение
+                // TODO: 28.01.2023  сделать првоерку на то что среди всего списка есть хоть 1 значение отвечающее тестовому значению
                 assertEquals(tag, TestValues.SPECIALIZATION);
             }
         }
-        String expectedPlace = eventPage.getEventPlace();
+        String expectedPlace = eventPage.selectEventPlace();
         assertNotNull(expectedPlace);
+        // TODO: 28.01.2023 сдедлать через тернарный оператор (все условия) ?true : false
         if (expectedPlace.equals("Online") || expectedPlace.equals("online")
                 || expectedPlace.equals("Онлайн") || expectedPlace.equals("онлайн")) {
-            assertTrue(true);
+            assert(true);
         } else {
             assertFalse(false);
         }
@@ -88,7 +106,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        loginFlow.authorizationEmail(TestValues.TEST_USER_EMAIL,TestValues.TEST_USER_PASSWORD);
+        loginFlow.authorizationEmail(properties.getProperty("user.login"),properties.getProperty("user.password"));
         Selenide.sleep(1000);
         Selenide.clearBrowserLocalStorage();
         mainPage.openUserProfile();
@@ -137,8 +155,7 @@ public class DouTestsCases extends BaseSelenideTest {
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
-        // TODO: 24.01.2023 problem with this integer value
-        int value = parseInt((companyPage.getScoreCompany().text().replaceAll("\\D+", "")))/1000;
+        int value = parseInt((companyPage.getScoreCompany().replaceAll("\\D+", "")))/1000;
         assertNotNull(value);
         assertTrue(value < 100 && value > 0);
     }

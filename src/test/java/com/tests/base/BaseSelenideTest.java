@@ -7,24 +7,29 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import static com.tests.base.WebDriverFactory.*;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.IOException;
 import java.util.Properties;
+
+import static com.tests.base.WebDriverFactory.createDriverManager;
 
 @ParametersAreNonnullByDefault
 public class BaseSelenideTest {
-    private static final String URL = "https://dou.ua/"; // todo resources (test.properties -> base.url)
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() throws IOException {
         final Properties properties = new PropertiesReader().readProperties();
         createDriverManager(properties);
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-        Selenide.open(URL); // todo read from properties + validate
+        String url = properties.getProperty("basic.url");
+        if (!url.isEmpty()) {
+            Selenide.open(url);
+        }
     }
 
     @AfterAll
-    public static void tearDown(){
+    public static void tearDown() {
         WebDriverManager.chromedriver().quit();
     }
 }

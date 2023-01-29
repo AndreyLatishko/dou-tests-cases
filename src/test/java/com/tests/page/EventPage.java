@@ -6,8 +6,7 @@ import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class EventPage {
-    public String getEventPlace() {
-        ////div[text()='Місце']
+    public String selectEventPlace() {
         return $x("//div[@class='dd']//following::div[3]").getText();
     }
 
