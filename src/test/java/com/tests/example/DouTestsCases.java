@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,20 +88,17 @@ public class DouTestsCases extends BaseSelenideTest {
         refs.forEach(x -> tags.add(x.getAttribute("text")));
         // прошлись по всем темам и  сохранили в пустой список
         for (String tag : tags) {
-            if (tag.contains(TestValues.SPECIALIZATION)) { //если тег содержит тестовое значение
-                // TODO: 28.01.2023  сделать првоерку на то что среди всего списка есть хоть 1 значение отвечающее тестовому значению
                 assertEquals(tag, TestValues.SPECIALIZATION);
-            }
         }
+
         String expectedPlace = eventPage.selectEventPlace();
         assertNotNull(expectedPlace);
-        // TODO: 28.01.2023 сдедлать через тернарный оператор (все условия) ?true : false
-        if (expectedPlace.equals("Online") || expectedPlace.equals("online")
-                || expectedPlace.equals("Онлайн") || expectedPlace.equals("онлайн")) {
-            assert(true);
-        } else {
-            assertFalse(false);
-        }
+        Set.of(
+                "Online",
+                "online",
+                "Онлайн",
+                "онлайн"
+        ).forEach(x -> assertEquals(expectedPlace, x));
     }
 
     @Test
