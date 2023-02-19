@@ -1,18 +1,15 @@
-package com.tests.base;
+package com.andrei.latishko.base;
 
+import com.andrei.latishko.helpers.PropertiesReader;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import com.tests.helpers.PropertiesReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.Properties;
-
-import static com.tests.base.WebDriverFactory.createDriverManager;
 
 @ParametersAreNonnullByDefault
 public class BaseSelenideTest {
@@ -20,10 +17,11 @@ public class BaseSelenideTest {
     @BeforeEach
     public void setUp() throws IOException {
         final Properties properties = new PropertiesReader().readProperties();
-        createDriverManager(properties);
+        WebDriverFactory.createDriverManager(properties);
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
-        String url = properties.getProperty("basic.url");
-        if (!url.isEmpty()) {
+
+        final String url = properties.getProperty("basic.url");
+        if (!url.isEmpty()) {  // todo what if empty
             Selenide.open(url);
         }
     }

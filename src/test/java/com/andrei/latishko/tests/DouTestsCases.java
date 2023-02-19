@@ -1,22 +1,36 @@
-package com.tests.example;
+package com.andrei.latishko.tests;
 
-import com.codeborne.selenide.*;
-import com.tests.base.BaseSelenideTest;
-import com.tests.helpers.PropertiesReader;
-import com.tests.page.LoginFlow;
-import com.tests.helpers.TestValues;
-import com.tests.page.*;
+import com.andrei.latishko.base.BaseSelenideTest;
+import com.andrei.latishko.helpers.PropertiesReader;
+import com.andrei.latishko.helpers.TestValues;
+import com.andrei.latishko.page.CalendarPage;
+import com.andrei.latishko.page.CompanyPage;
+import com.andrei.latishko.page.EditProfilePage;
+import com.andrei.latishko.page.EventPage;
+import com.andrei.latishko.page.FiftyCompanyPage;
+import com.andrei.latishko.page.JobPage;
+import com.andrei.latishko.page.LoginBorder;
+import com.andrei.latishko.page.LoginFlow;
+import com.andrei.latishko.page.MainPage;
+import com.andrei.latishko.page.UserPage;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
-import org.junit.jupiter.api.*;
-
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
-import static java.lang.Integer.parseInt;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -33,40 +47,48 @@ public class DouTestsCases extends BaseSelenideTest {
     private final CompanyPage companyPage = new CompanyPage();
     private final Properties properties;
 
-    {
+    public DouTestsCases() {
         try {
-            properties = new PropertiesReader().readProperties();
+            this.properties = new PropertiesReader().readProperties();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // todo add everywhere descriptions
+
+    // todo avoid selenide code in tests only buisness logic
+
+    // todo get rid of all non english comments + code should be self-documented
 
     @Test
-    @Order(3)
+    @Order(3) // todo please remove order
     public void openAllHref() {
         mainPage.openJobTab();
-        jobPage.searchListLinks(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
+        jobPage.searchForJobs(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
         //вытащили все доступные вакансии по предыдущим условиям
-        ElementsCollection refs = jobPage.getAllVacancies();
-        ArrayList<String> links = new ArrayList<>();
+        ElementsCollection jobElements = jobPage.getAllVacancies();
+        ArrayList<String> jobLinks = new ArrayList<>();
         // из предыдущего списка вытащили информацию которая содержит ссылку на вакансию
-        refs.forEach(x -> links.add(x.getAttribute("href")));
+        // todo read https://selenide.org/2022/01/10/selenide-6.2.0/ "Replaced $$.iterator() by $$.asDynamicIterable() and $$.asFixedIterable()"
+        jobElements.asFixedIterable().forEach(x -> jobLinks.add(x.getAttribute("href")));
         //сравниваем список линков из arraylist и те ссылки которые мы открываем через цикл
-        for (String actualLink : links) {
+        for (String actualLink : jobLinks) {
             Selenide.open(actualLink);
-            String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+            final String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
             assertNotNull(expectedUrl);
             assertEquals(expectedUrl, actualLink);
         }
+        // todo change verification, compare job title in the list to the job title on job page
     }
 
     @Test
     @Order(1)
     @Description("This test demonstrates,user can to autorisation with wrong email")
     public void incorrectAuthorisationUser() {
-        loginFlow.authorizationEmail("wrong@gmail.com", properties.getProperty("user.password"));
-        loginBorder.alertForError();
+        loginFlow.authorizeUserWithEmail("wrong@gmail.com", properties.getProperty("user.password"));
+        // todo method do nothing, return and check the value
+        loginBorder.isAlertAppered();
         loginBorder.closeLoginBorder();
     }
 
@@ -82,6 +104,7 @@ public class DouTestsCases extends BaseSelenideTest {
         calendarPage.openFirstEvent();
 
         ElementsCollection refs = eventPage.listTopicsInEvent();
+        // todo this looks like part of listTopicsInEvent() method (better call getEventTopics)
         //достали список тем с ивента
         ArrayList<String> tags = new ArrayList<>();
         // создали пустой список
@@ -104,14 +127,15 @@ public class DouTestsCases extends BaseSelenideTest {
     @Test
     @Order(6)
     public void editUserName() {
-        loginFlow.authorizationEmail(properties.getProperty("user.login"),properties.getProperty("user.password"));
-        Selenide.sleep(1000);
+        // todo read properties in a separate line
+        loginFlow.authorizeUserWithEmail(properties.getProperty("user.login"),properties.getProperty("user.password"));
+        Selenide.sleep(1000); // todo wait for element instead of sleep
         Selenide.clearBrowserLocalStorage();
         mainPage.openUserProfile();
         userPage.openEditProfile();
-        editProfilePage.writeNewNameUser(TestValues.TEST_USER_NAME);
-        editProfilePage.getSaveButton();
-        assertEquals(userPage.checkUserName(), TestValues.TEST_USER_NAME);
+        editProfilePage.setNewName(TestValues.TEST_USER_NAME);
+        editProfilePage.clickSaveButton();
+        assertEquals(userPage.getUserName(), TestValues.TEST_USER_NAME);
     }
 
     @Test
@@ -145,7 +169,6 @@ public class DouTestsCases extends BaseSelenideTest {
         for (int i = 0; i < expectedLinks.size(); i++) {
             assertEquals(expectedLinks.get(i), actualLinks.get(i));
         }
-        int i = 0;
     }
 
     @Test
@@ -153,8 +176,7 @@ public class DouTestsCases extends BaseSelenideTest {
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
-        int value = parseInt((companyPage.getScoreCompany().replaceAll("\\D+", "")))/1000;
-        assertNotNull(value);
+        int value = Integer.parseInt((companyPage.getScoreCompany().replaceAll("\\D+", "")))/1000;
         assertTrue(value < 100 && value > 0);
     }
 }

@@ -1,4 +1,4 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 import static com.codeborne.selenide.Selenide.$x;
 

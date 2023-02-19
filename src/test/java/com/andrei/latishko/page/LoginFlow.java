@@ -1,4 +1,4 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 /**
  * This class implements UI login flow to be reused across tests.
@@ -8,7 +8,7 @@ public class LoginFlow {
     private final EnterPage enterPage = new EnterPage();
     private final LoginBorder loginBorder = new LoginBorder();
 
-    public void authorizationEmail(String email, String password) {
+    public void authorizeUserWithEmail(String email, String password) {
         mainPage.loginButton();
         enterPage.selectEnterForEmail();
         loginBorder.inputEmail(email);

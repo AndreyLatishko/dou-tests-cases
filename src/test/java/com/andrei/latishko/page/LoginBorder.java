@@ -1,4 +1,4 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -11,7 +11,7 @@ public class LoginBorder {
          $x("//div[@class='input']//input[@type ='password']").setValue(password).pressEnter();
     }
 
-    public void alertForError() {
+    public void isAlertAppered() {
          $x("//div[@id='wrong-password-message']").isDisplayed();
     }
 

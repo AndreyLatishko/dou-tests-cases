@@ -1,4 +1,4 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 
 import static com.codeborne.selenide.Selenide.$x;
@@ -8,7 +8,7 @@ public class UserPage {
         $x("//div[@class='wrap edit-content-link']//a[text()='Редагувати профіль']").click();
     }
 
-    public String checkUserName() {
+    public String getUserName() {
         return $x("//div[@class='head']//h1").text();
     }
 }

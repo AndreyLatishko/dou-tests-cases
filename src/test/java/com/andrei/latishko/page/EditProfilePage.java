@@ -1,15 +1,15 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 
 import static com.codeborne.selenide.Selenide.$x;
 
 public class EditProfilePage {
-    public void writeNewNameUser(String name) {
+    public void setNewName(String name) {
         $x("//input[@name='display_name']").clear();
         $x("//input[@name='display_name']").setValue(name);
     }
 
-    public void getSaveButton() {
+    public void clickSaveButton() {
         $x("//button[@id='btnSubmit']").click();
     }
 }

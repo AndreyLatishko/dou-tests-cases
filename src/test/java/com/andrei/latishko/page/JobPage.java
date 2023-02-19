@@ -1,4 +1,4 @@
-package com.tests.page;
+package com.andrei.latishko.page;
 
 
 import com.codeborne.selenide.ElementsCollection;
@@ -12,7 +12,7 @@ public class JobPage {
         return $$x("//li[@class='l-vacancy']//div[@class='title']//a[@class='vt']");
     }
 
-    public void searchListLinks(String specialization, String jobPosition) {
+    public void searchForJobs(String specialization, String jobPosition) {
         $x(String.format("//option[@value='%s']", specialization)).click();
         $x("//input[@class='job']").setValue(jobPosition).pressEnter();
     }

@@ -1,4 +1,4 @@
-package com.tests.helpers;
+package com.andrei.latishko.helpers;
 
 public class TestValues {
     public static final String TEST_USER_EMAIL = "asdasfasfas@gmail.com";
