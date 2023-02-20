@@ -17,9 +17,8 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Description;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
 public class DouTestsCases extends BaseSelenideTest {
     private final MainPage mainPage = new MainPage();
     private final JobPage jobPage = new JobPage();
@@ -70,11 +69,10 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Description("This test demonstrates,user can to authorisation with wrong email.")
+    @Description("This test demonstrates that a user cannot log in with an incorrect email.")
     public void incorrectAuthorisationUser() {
         loginFlow.authorizeUserWithEmail("wrong@gmail.com", properties.getProperty("user.password"));
-        // todo method do nothing, return and check the value
-        loginBorder.isAlertAppered();
+        assertTrue(loginBorder.isAlertAppeared(), "Error, alert did not appear");
         loginBorder.closeLoginBorder();
     }
 
@@ -87,35 +85,25 @@ public class DouTestsCases extends BaseSelenideTest {
         calendarPage.selectTopic(TestValues.CALENDAR_TOPIC);
         calendarPage.openFirstEvent();
 
-        ElementsCollection refs = eventPage.listTopicsInEvent();
-        // todo this looks like part of listTopicsInEvent() method (better call getEventTopics)
-        ArrayList<String> tags = new ArrayList<>();
-        refs.forEach(x -> tags.add(x.getAttribute("text")));
+        ArrayList<String> tags = eventPage.getEventTopics();
         for (String tag : tags) {
                 assertEquals(tag, TestValues.SPECIALIZATION);
         }
 
         String expectedPlace = eventPage.selectEventPlace();
         assertNotNull(expectedPlace);
-        Set.of(
-                "Online",
-                "online",
-                "Онлайн",
-                "онлайн"
-        ).forEach(x -> assertEquals(expectedPlace, x));
+        assertTrue(Set.of("Online", "online", "Онлайн", "онлайн").contains(expectedPlace));
     }
 
     @Test
     @Description("Checking the new user name after a change.")
     public void editUserName() {
-        // todo read properties in a separate line
-        loginFlow.authorizeUserWithEmail(properties.getProperty("user.login"),properties.getProperty("user.password"));
-        Selenide.sleep(1000); // todo wait for element instead of sleep
-        Selenide.clearBrowserLocalStorage();
+        String email = properties.getProperty("user.login");
+        String password = properties.getProperty("user.password");
+        loginFlow.authorizeUserWithEmail(email,password);
         mainPage.openUserProfile();
         userPage.openEditProfile();
         editProfilePage.setNewName(TestValues.TEST_USER_NAME);
-        editProfilePage.clickSaveButton();
         assertEquals(userPage.getUserName(), TestValues.TEST_USER_NAME);
     }
 
@@ -124,7 +112,6 @@ public class DouTestsCases extends BaseSelenideTest {
     public void findTheMostBiggestCompany() {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
-        //  Selenide.clearBrowserLocalStorage();
         fiftyCompanyPage.getOverlayAndTable();
         assertEquals(fiftyCompanyPage.getFirstCompany(), "EPAM Ukraine");
     }

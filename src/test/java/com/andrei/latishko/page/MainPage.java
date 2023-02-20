@@ -21,7 +21,8 @@ public class MainPage {
     }
 
     public void openUserProfile() {
-        $("a.min-profile").shouldBe(Condition.visible).click();
+        $("a.min-profile").shouldHave(Condition.visible).click();
     }
+
 
 }

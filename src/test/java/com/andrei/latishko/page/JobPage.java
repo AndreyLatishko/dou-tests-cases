@@ -3,14 +3,11 @@ package com.andrei.latishko.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
 
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JobPage {
 

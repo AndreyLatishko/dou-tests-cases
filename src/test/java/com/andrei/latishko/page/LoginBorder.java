@@ -11,8 +11,8 @@ public class LoginBorder {
          $x("//div[@class='input']//input[@type ='password']").setValue(password).pressEnter();
     }
 
-    public void isAlertAppered() {
-         $x("//div[@id='wrong-password-message']").isDisplayed();
+    public boolean isAlertAppeared() {
+        return $x("//div[@id='wrong-password-message']").isDisplayed();
     }
 
     public void closeLoginBorder() {
