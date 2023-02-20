@@ -54,25 +54,17 @@ public class DouTestsCases extends BaseSelenideTest {
             throw new RuntimeException(e);
         }
     }
-
-    // todo add everywhere descriptions
-
     // todo avoid selenide code in tests only buisness logic
 
-    // todo get rid of all non english comments + code should be self-documented
-
     @Test
-    @Order(3) // todo please remove order
+    @Description("Check the functionality of the link to the job")
     public void openAllHref() {
         mainPage.openJobTab();
         jobPage.searchForJobs(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
-        //вытащили все доступные вакансии по предыдущим условиям
         ElementsCollection jobElements = jobPage.getAllVacancies();
         ArrayList<String> jobLinks = new ArrayList<>();
-        // из предыдущего списка вытащили информацию которая содержит ссылку на вакансию
         // todo read https://selenide.org/2022/01/10/selenide-6.2.0/ "Replaced $$.iterator() by $$.asDynamicIterable() and $$.asFixedIterable()"
         jobElements.asFixedIterable().forEach(x -> jobLinks.add(x.getAttribute("href")));
-        //сравниваем список линков из arraylist и те ссылки которые мы открываем через цикл
         for (String actualLink : jobLinks) {
             Selenide.open(actualLink);
             final String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
@@ -83,8 +75,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(1)
-    @Description("This test demonstrates,user can to autorisation with wrong email")
+    @Description("This test demonstrates,user can to authorisation with wrong email")
     public void incorrectAuthorisationUser() {
         loginFlow.authorizeUserWithEmail("wrong@gmail.com", properties.getProperty("user.password"));
         // todo method do nothing, return and check the value
@@ -92,11 +83,9 @@ public class DouTestsCases extends BaseSelenideTest {
         loginBorder.closeLoginBorder();
     }
 
-    /**
-     * check this test with ukrainian, english language
-     */
     @Test
-    @Order(2)
+    @Description("Check the topic and location of the event with the search." +
+            "Check this test value with ukrainian, english language.")
     public void userFindEventTags() {
         mainPage.openCalendarTab();
         calendarPage.selectPlace(TestValues.CALENDAR_PLACE);
@@ -105,11 +94,8 @@ public class DouTestsCases extends BaseSelenideTest {
 
         ElementsCollection refs = eventPage.listTopicsInEvent();
         // todo this looks like part of listTopicsInEvent() method (better call getEventTopics)
-        //достали список тем с ивента
         ArrayList<String> tags = new ArrayList<>();
-        // создали пустой список
         refs.forEach(x -> tags.add(x.getAttribute("text")));
-        // прошлись по всем темам и  сохранили в пустой список
         for (String tag : tags) {
                 assertEquals(tag, TestValues.SPECIALIZATION);
         }
@@ -125,7 +111,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(6)
+    @Description("Checking the new user name after a change.")
     public void editUserName() {
         // todo read properties in a separate line
         loginFlow.authorizeUserWithEmail(properties.getProperty("user.login"),properties.getProperty("user.password"));
@@ -139,21 +125,17 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(5)
+    @Description("Checking the largest company for January 2022.")
     public void findTheMostBiggestCompany() {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
-        Selenide.clearBrowserLocalStorage();
+        //  Selenide.clearBrowserLocalStorage();
         fiftyCompanyPage.getOverlayAndTable();
-        Selenide.executeJavaScript(
-                "document.querySelector" +
-                        "(\"#period-slider > g >g.handler\").style.transform = 'translate(1229px,0)';"
-        );
         assertEquals(fiftyCompanyPage.getFirstCompany(), "EPAM Ukraine");
     }
 
     @Test
-    @Order(4)
+    @Description("Check if the company is correctly sorted by the number of technicians. ")
     public void checkValueTechnicalStaffTop50Company() {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
@@ -172,7 +154,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Order(7)
+    @Description("Checking that the company's valuation is within acceptable numerical ranges. ")
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
