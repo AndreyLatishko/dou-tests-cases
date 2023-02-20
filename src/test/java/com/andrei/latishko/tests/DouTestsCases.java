@@ -16,10 +16,8 @@ import com.andrei.latishko.page.UserPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import java.io.IOException;
@@ -54,28 +52,25 @@ public class DouTestsCases extends BaseSelenideTest {
             throw new RuntimeException(e);
         }
     }
-    // todo avoid selenide code in tests only buisness logic
+    // todo avoid selenide code in tests only business logic
 
     @Test
-    @Description("Check the functionality of the link to the job")
+    @Description("Check the functionality of the link to the job.")
     public void openAllHref() {
         mainPage.openJobTab();
         jobPage.searchForJobs(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
         ElementsCollection jobElements = jobPage.getAllVacancies();
-        ArrayList<String> jobLinks = new ArrayList<>();
-        // todo read https://selenide.org/2022/01/10/selenide-6.2.0/ "Replaced $$.iterator() by $$.asDynamicIterable() and $$.asFixedIterable()"
-        jobElements.asFixedIterable().forEach(x -> jobLinks.add(x.getAttribute("href")));
+        ArrayList<String> jobLinks = jobPage.getAllLinks(jobElements);
+
         for (String actualLink : jobLinks) {
-            Selenide.open(actualLink);
-            final String expectedUrl = WebDriverRunner.getWebDriver().getCurrentUrl();
+            final String expectedUrl = jobPage.titleJob(actualLink);
             assertNotNull(expectedUrl);
             assertEquals(expectedUrl, actualLink);
         }
-        // todo change verification, compare job title in the list to the job title on job page
     }
 
     @Test
-    @Description("This test demonstrates,user can to authorisation with wrong email")
+    @Description("This test demonstrates,user can to authorisation with wrong email.")
     public void incorrectAuthorisationUser() {
         loginFlow.authorizeUserWithEmail("wrong@gmail.com", properties.getProperty("user.password"));
         // todo method do nothing, return and check the value
@@ -135,7 +130,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Description("Check if the company is correctly sorted by the number of technicians. ")
+    @Description("Check if the company is correctly sorted by the number of technicians.")
     public void checkValueTechnicalStaffTop50Company() {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
@@ -154,7 +149,7 @@ public class DouTestsCases extends BaseSelenideTest {
     }
 
     @Test
-    @Description("Checking that the company's valuation is within acceptable numerical ranges. ")
+    @Description("Checking that the company's valuation is within acceptable numerical ranges.")
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
