@@ -41,7 +41,7 @@ public class DouTestsCases extends BaseSelenideTest {
     @Description("Check the functionality of the link to the job.")
     public void openAllHref() {
         mainPage.openJobTab();
-        jobPage.searchForJobs(TestValues.SPECIALIZATION,TestValues.JOB_POSITION);
+        jobPage.searchForJobs(TestValues.SPECIALIZATION, TestValues.JOB_POSITION);
         ElementsCollection jobElements = jobPage.getAllVacancies();
         ArrayList<String> jobLinks = jobPage.getAllLinks(jobElements);
 
@@ -71,7 +71,7 @@ public class DouTestsCases extends BaseSelenideTest {
 
         ArrayList<String> tags = eventPage.getEventTopics();
         for (String tag : tags) {
-                assertEquals(tag, TestValues.SPECIALIZATION);
+            assertEquals(tag, TestValues.SPECIALIZATION);
         }
 
         String expectedPlace = eventPage.selectEventPlace();
@@ -84,7 +84,7 @@ public class DouTestsCases extends BaseSelenideTest {
     public void editUserName() {
         String email = properties.getProperty("user.login");
         String password = properties.getProperty("user.password");
-        loginFlow.authorizeUserWithEmail(email,password);
+        loginFlow.authorizeUserWithEmail(email, password);
         mainPage.openUserProfile();
         userPage.openEditProfile();
         editProfilePage.setNewName(TestValues.TEST_USER_NAME);
@@ -106,15 +106,15 @@ public class DouTestsCases extends BaseSelenideTest {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
 
-        ArrayList<Integer> actualLinks= fiftyCompanyPage.getTechnicalStaffValue();
+        ArrayList<Integer> actualLinks = fiftyCompanyPage.getTechnicalStaffValue();
         ArrayList<Integer> expectedLinks = fiftyCompanyPage.sortArray(actualLinks);
 
-        assertIterableEquals(expectedLinks,actualLinks);
+        assertIterableEquals(expectedLinks, actualLinks);
     }
 
     @Test
     @Description("Checking that the company's valuation is within acceptable numerical ranges.")
-    public void evaluationProvideCompany(){
+    public void evaluationProvideCompany() {
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
         int score = companyPage.getScoreCompany();

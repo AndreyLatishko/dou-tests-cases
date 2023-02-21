@@ -37,7 +37,7 @@ public class FiftyCompanyPage {
         );
     }
 
-    public ArrayList<Integer> sortArray(ArrayList<Integer> list){
+    public ArrayList<Integer> sortArray(ArrayList<Integer> list) {
         ArrayList<Integer> expectedLinks = new ArrayList<>(list);
         Collections.sort(expectedLinks);
         return expectedLinks;

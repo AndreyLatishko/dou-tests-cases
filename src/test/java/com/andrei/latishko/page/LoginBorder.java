@@ -4,11 +4,11 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class LoginBorder {
     public void inputEmail(String email) {
-         $x("//div[@class='input']//input[@type ='text']").setValue(email);
+        $x("//div[@class='input']//input[@type ='text']").setValue(email);
     }
 
     public void inputPassword(String password) {
-         $x("//div[@class='input']//input[@type ='password']").setValue(password).pressEnter();
+        $x("//div[@class='input']//input[@type ='password']").setValue(password).pressEnter();
     }
 
     public boolean isAlertAppeared() {
@@ -16,6 +16,6 @@ public class LoginBorder {
     }
 
     public void closeLoginBorder() {
-         $x("//div[@class='close cancel']").click();
+        $x("//div[@class='close cancel']").click();
     }
 }

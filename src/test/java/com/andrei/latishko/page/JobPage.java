@@ -28,13 +28,13 @@ public class JobPage {
         $x(String.format("//*[@alt='%s']", titleCompany)).click();
     }
 
-    public ArrayList<String> getAllLinks(ElementsCollection collection){
+    public ArrayList<String> getAllLinks(ElementsCollection collection) {
         ArrayList<String> jobLinks = new ArrayList<>();
         collection.asFixedIterable().forEach(x -> jobLinks.add(x.getAttribute("text")));
         return jobLinks;
     }
 
-    public String titleJob(String href){
+    public String titleJob(String href) {
         Selenide.open(href);
         return String.valueOf($x("//h1[@class='g-h2']"));
     }

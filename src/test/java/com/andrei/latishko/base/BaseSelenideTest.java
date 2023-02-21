@@ -7,6 +7,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.Properties;
@@ -21,7 +22,9 @@ public class BaseSelenideTest {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 
         final String url = properties.getProperty("basic.url");
-        if (!url.isEmpty()) {  // todo what if empty
+        if (url == null || url.isEmpty()) {
+            throw new IllegalArgumentException("The 'basic.url' property is empty in the configuration file.");
+        } else {
             Selenide.open(url);
         }
     }

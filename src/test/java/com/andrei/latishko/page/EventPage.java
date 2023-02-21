@@ -13,7 +13,7 @@ public class EventPage {
     }
 
     public ArrayList<String> getEventTopics() {
-        ElementsCollection refs =  $$x("//div[@class='b-post-tags']//a");
+        ElementsCollection refs = $$x("//div[@class='b-post-tags']//a");
         ArrayList<String> tags = new ArrayList<>();
         refs.asFixedIterable().forEach(x -> tags.add(x.getAttribute("text")));
         return tags;
