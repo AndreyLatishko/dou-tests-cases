@@ -3,32 +3,17 @@ package com.andrei.latishko.tests;
 import com.andrei.latishko.base.BaseSelenideTest;
 import com.andrei.latishko.helpers.PropertiesReader;
 import com.andrei.latishko.helpers.TestValues;
-import com.andrei.latishko.page.CalendarPage;
-import com.andrei.latishko.page.CompanyPage;
-import com.andrei.latishko.page.EditProfilePage;
-import com.andrei.latishko.page.EventPage;
-import com.andrei.latishko.page.FiftyCompanyPage;
-import com.andrei.latishko.page.JobPage;
-import com.andrei.latishko.page.LoginBorder;
-import com.andrei.latishko.page.LoginFlow;
-import com.andrei.latishko.page.MainPage;
-import com.andrei.latishko.page.UserPage;
+import com.andrei.latishko.page.*;
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DouTestsCases extends BaseSelenideTest {
@@ -51,7 +36,6 @@ public class DouTestsCases extends BaseSelenideTest {
             throw new RuntimeException(e);
         }
     }
-    // todo avoid selenide code in tests only business logic
 
     @Test
     @Description("Check the functionality of the link to the job.")
@@ -122,17 +106,10 @@ public class DouTestsCases extends BaseSelenideTest {
         mainPage.openJobTab();
         jobPage.openTop50CompanyTab();
 
-        ElementsCollection refs = fiftyCompanyPage.getTechnicalStaffValue();
-        ArrayList<Integer> expectedLinks = new ArrayList<>();
-        for (SelenideElement ref : refs) {
-            expectedLinks.add(Integer.valueOf(ref.getText().replaceAll("\\D+", "")));
-        }
-        ArrayList<Integer> actualLinks = new ArrayList<>(expectedLinks);
-        Collections.sort(expectedLinks);
-        assertEquals(actualLinks.size(), expectedLinks.size());
-        for (int i = 0; i < expectedLinks.size(); i++) {
-            assertEquals(expectedLinks.get(i), actualLinks.get(i));
-        }
+        ArrayList<Integer> actualLinks= fiftyCompanyPage.getTechnicalStaffValue();
+        ArrayList<Integer> expectedLinks = fiftyCompanyPage.sortArray(actualLinks);
+
+        assertIterableEquals(expectedLinks,actualLinks);
     }
 
     @Test
@@ -140,7 +117,7 @@ public class DouTestsCases extends BaseSelenideTest {
     public void evaluationProvideCompany(){
         mainPage.openJobTab();
         jobPage.selectCompany(TestValues.COMPANY_TITLE);
-        int value = Integer.parseInt((companyPage.getScoreCompany().replaceAll("\\D+", "")))/1000;
-        assertTrue(value < 100 && value > 0);
+        int score = companyPage.getScoreCompany();
+        assertTrue(score >= 0 && score <= 100);
     }
 }
